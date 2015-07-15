@@ -2,6 +2,9 @@ import csv
 import re
 import sys
 
+percent = re.compile('.*?(?<!\S)([0-9]{1,2}(\.\d+)?)[%.]*(?!\S)')
+
+
 def strip_tags(value):
     """Returns the given HTML with all tags stripped."""
     return re.sub(r'<[^>]*?>', '', value)
@@ -34,7 +37,13 @@ location = []
 operator_line = False
 well_type_counter = 0
 
+has_capture_plan = False
+
+state_wide_counter = 0
+state_wide_percent = ''
+
 with open(sys.argv[1], encoding='iso-8859-1') as f :
+
     for line in f :
         
         # Well File
@@ -68,8 +77,35 @@ with open(sys.argv[1], encoding='iso-8859-1') as f :
         if line.startswith('(Subject to NDIC Approval') :
             location_line = True
 
+        if 'capture' in line.lower() :
+            has_capture_plan = True
+            
+        if state_wide_counter == 1 :
+            m = percent.match(strip_tags(line))
+            if m :
+                state_wide_percent = m.group(1)
+                state_wide_counter = False
+            else : 
+                print(sys.argv[1], old_line, file=sys.stderr)
+                print(state_wide_counter, line, file=sys.stderr)
+                state_wide_counter += 1
+
+        elif state_wide_counter :
+            print(state_wide_counter, line, file=sys.stderr)
+            state_wide_counter += 1 
+            if state_wide_counter > 6 :
+                state_wide_counter = False
+                
+        if 'statewide' in line.lower() :
+            m = percent.match(strip_tags(line))
+            if m and 'estimated to reduce' not in line :
+                state_wide_percent = m.group(1)
+            else :
+                old_line = line
+                state_wide_counter = 1
+
 try :
-    well = well_file_number, operator, well_type
+    well = well_file_number, operator, well_type, state_wide_percent
 except :
     print(sys.argv[1], file=sys.stderr)
     raise
@@ -86,7 +122,7 @@ else :
 
 writer = csv.writer(sys.stdout)
 
-writer.writerow([filename] + well + [lat, lng, aligned_filename])
+writer.writerow([filename] + well + [has_capture_plan, lat, lng, aligned_filename])
 
 
 
