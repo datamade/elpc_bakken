@@ -7,14 +7,13 @@ well_plans.csv :
 
 foo : well_plans.csv $(shell grep ,, well_plans.csv | grep -oP '(.*)(?=\.pdf)' | sed -z 's/\n/_text /g')
 
-%_images : pdf/%.pdf html/pdf/%.pdfs.html
-	mkdir -p $@
+%_text : pdf/%.pdf html/pdf/%.pdfs.html
+	mkdir -p $*_images
 	for page in `grep -oP '<A name=\K([0-9]+)(?=></a><hr>)' $(word 2, $^)` ; \
-	  do pdftoppm -f $$page -l $$page -r 300 $< > $@/$$page.ppm ; \
+	  do pdftoppm -f $$page -l $$page -r 300 $< > $*_images/$$page.ppm ; \
           done
-
-%_text : %_images
-	ocrfeeder-cli -e TESSERACT -f HTML \
-          $(patsubst %, -i %, $(wildcard $^/*.ppm)) -o $@
+	ocrfeeder-cli -e TESSERACT -f HTML -i \
+	  `echo $*_images/*.ppm | sed 's/ / -i /g'` -o $@
+	rm -rf $*_images
 
 
