@@ -13,7 +13,8 @@ foo : well_plans.csv $(shell grep ,, well_plans.csv | grep -oP '(.*)(?=\.pdf)' |
 	  do pdftoppm -f $$page -l $$page -r 300 $< > $*/$$page.ppm ; \
           done
 	ocrfeeder-cli -e TESSERACT -f HTML \
-          $(patsubst %, -i %, $(wildcard $*\/*.ppm)) -o $@
-	rm $*/*.ppm
+          $(patsubst %, -i %, $(shell ls $*\/*.ppm | sed -z 's/\n/ /g')) \
+          -o $@
+	rm *.ppm
 
 
