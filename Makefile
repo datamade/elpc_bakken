@@ -5,15 +5,16 @@ well_plans.csv :
 	  do python3 extract.py "$$file"; \
 	  done	> $@	
 
-foo : well_plans.csv $(shell grep ,, well_plans.csv | grep -oP '(.*)(?=\.pdf)' | sed -z 's/\n/_extracted /g')
+foo : well_plans.csv $(shell grep ,, well_plans.csv | grep -oP '(.*)(?=\.pdf)' | sed -z 's/\n/_text /g')
 
-%_extracted : pdfs/%.pdf html/pdf/%.pdfs.html
-	mkdir -p $*
+%_images : pdf/%.pdf html/pdf/%.pdfs.html
+	mkdir -p $@
 	for page in `grep -oP '<A name=\K([0-9]+)(?=></a><hr>)' $(word 2, $^)` ; \
-	  do pdftoppm -f $$page -l $$page -r 300 $< > $*/$$page.ppm ; \
+	  do pdftoppm -f $$page -l $$page -r 300 $< > $@/$$page.ppm ; \
           done
+
+%_text : %_images
 	ocrfeeder-cli -e TESSERACT -f HTML \
-          $(patsubst %, -i %, $(wildcard $*\/*.ppm)) -o $@
-	rm $*/*.ppm
+          $(patsubst %, -i %, $(wildcard $^/*.ppm)) -o $@
 
 
