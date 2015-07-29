@@ -14,6 +14,6 @@ foo : well_plans.csv $(shell grep ,, well_plans.csv | grep -oP '(.*)(?=\.pdf)' |
           done
 	ocrfeeder-cli -e TESSERACT -f HTML \
           $(patsubst %, -i %, $(wildcard $*\/*.ppm)) -o $@
-	rm *.ppm
+	rm $*/*.ppm
 
 
