@@ -1,0 +1,55 @@
+
+
+.styleSans725.0000<enum PANGO_WEIGHT_NORMAL of type PangoWeight><enum PANGO_STYLE_NORMAL of type PangoStyle> {
+    font-family: Sans;
+    font-size: 725.0pt;
+    font-weight: normal;
+    font-style: normal;
+    text-align: 0;
+    letter-spacing: 0pt;
+    line-height: 0pt;
+}
+
+
+.styleSans2.0000<enum PANGO_WEIGHT_NORMAL of type PangoWeight><enum PANGO_STYLE_NORMAL of type PangoStyle> {
+    font-family: Sans;
+    font-size: 2.0pt;
+    font-weight: normal;
+    font-style: normal;
+    text-align: 0;
+    letter-spacing: 0pt;
+    line-height: 0pt;
+}
+
+
+.styleSans724.0000<enum PANGO_WEIGHT_NORMAL of type PangoWeight><enum PANGO_STYLE_NORMAL of type PangoStyle> {
+    font-family: Sans;
+    font-size: 724.0pt;
+    font-weight: normal;
+    font-style: normal;
+    text-align: 0;
+    letter-spacing: 0pt;
+    line-height: 0pt;
+}
+
+
+.styleSans288.0000<enum PANGO_WEIGHT_NORMAL of type PangoWeight><enum PANGO_STYLE_NORMAL of type PangoStyle> {
+    font-family: Sans;
+    font-size: 288.0pt;
+    font-weight: normal;
+    font-style: normal;
+    text-align: 0;
+    letter-spacing: 0pt;
+    line-height: 0pt;
+}
+
+
+.styleSans529.0000<enum PANGO_WEIGHT_NORMAL of type PangoWeight><enum PANGO_STYLE_NORMAL of type PangoStyle> {
+    font-family: Sans;
+    font-size: 529.0pt;
+    font-weight: normal;
+    font-style: normal;
+    text-align: 0;
+    letter-spacing: 0pt;
+    line-height: 0pt;
+}
