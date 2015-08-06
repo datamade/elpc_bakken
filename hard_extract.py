@@ -19,6 +19,7 @@ def make_statewide_flare() :
                ('statewide', 'state flare')) :
             m = percent.match(strip_tags(line))
             if m and 'estimated to reduce' not in line :
+                state_wide_count = 0
                 return ('statewide_flare', m.group(1))
             else :
                 state_wide_counter += 1
