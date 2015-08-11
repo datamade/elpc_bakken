@@ -12,7 +12,7 @@ hard_well_plans.csv : easy_well_plans.csv ocr_exclude.txt \
 	python3 hard_extract.py  $(filter %_text,$^) > $@
 
 easy_well_plans.csv : $(wildcard html/pdf/*.pdfs.html)
-	  python3 easy_extract.py $^ > $@
+	python3 easy_extract.py $^ > $@
 
 
 ocr_extracted/%_text : pdf/%.pdf html/pdf/%.pdfs.html
@@ -27,5 +27,8 @@ ocr_extracted/%_text : pdf/%.pdf html/pdf/%.pdfs.html
 	  `echo $*_images/*.ppm | sed 's/ / -i /g'` -o $@
 
 	rm -rf $*_images
+
+html/pdf/%.pdfs.html : pdf/%.pdf
+	pdftohtml $< /html/$<.html
 
 
